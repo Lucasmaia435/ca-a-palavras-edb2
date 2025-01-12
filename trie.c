@@ -19,7 +19,7 @@ NoDigital *criarNoDigital(void)
     return node;
 }
 
-void inserir(NoDigital *root, const char *word)
+void inserir_digital(NoDigital *root, const char *word)
 {
     NoDigital *node = root;
     while (*word)
@@ -40,7 +40,7 @@ void inserir(NoDigital *root, const char *word)
     node->fim_da_palavra = true;
 }
 
-bool procurar(NoDigital *root, const char *word)
+bool procurar_digital(NoDigital *root, const char *word)
 {
     NoDigital *node = root;
     while (*word)
@@ -56,7 +56,7 @@ bool procurar(NoDigital *root, const char *word)
     return node->fim_da_palavra;
 }
 
-bool comecaCom(NoDigital *root, const char *prefix)
+bool comeca_com_digital(NoDigital *root, const char *prefix)
 {
     NoDigital *node = root;
     while (*prefix)
@@ -72,7 +72,7 @@ bool comecaCom(NoDigital *root, const char *prefix)
     return true;
 }
 
-void carregaPalavras(NoDigital *root, const char *filename)
+void carrega_palavras_digital(NoDigital *root, const char *filename)
 {
     FILE *file = fopen(filename, "r");
     if (!file)
@@ -90,7 +90,7 @@ void carregaPalavras(NoDigital *root, const char *filename)
     fclose(file);
 }
 
-void liberarNo(NoDigital *root)
+void liberar_no_digital(NoDigital *root)
 {
     if (!root)
         return;

@@ -13,10 +13,10 @@ typedef struct NoDigital
 
 // Funções para a Trie
 NoDigital *criarNoDigital(void);
-void inserir(NoDigital *raiz, const char *word);
-bool procurar(NoDigital *raiz, const char *word);
-bool comecaCom(NoDigital *raiz, const char *prefix);
-void carregaPalavras(NoDigital *raiz, const char *arquivo);
-void liberarNo(NoDigital *raiz);
+void inserir_digital(NoDigital *raiz, const char *word);
+bool procurar_digital(NoDigital *raiz, const char *word);
+bool comeca_com_digital(NoDigital *raiz, const char *prefix);
+void carrega_palavras_digital(NoDigital *raiz, const char *arquivo);
+void liberar_no_digital(NoDigital *raiz);
 
 #endif // TRIE_H
