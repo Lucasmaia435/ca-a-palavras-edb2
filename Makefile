@@ -1,30 +1,31 @@
-# Nome do executável
-TARGET = main
+# Makefile para o projeto ca-palavras
 
-# Compilador
+# Compilador e flags
 CC = gcc
+CFLAGS = -Wall -g
 
-# Opções de compilação
-CFLAGS = -Wall -std=c11
+# Diretórios e arquivos
+SRC = trie.c avl.c jogo.c main.c
+HEADERS = trie.h avl.h
+OBJECTS = $(SRC:.c=.o)
+TARGET = ca-palavras
 
-# Arquivos de objeto
-OBJS = main.o funcs.o
+default: $(TARGET)
 
-# Regra padrão para compilar o projeto
-all: $(TARGET)
+# Regra para compilar o binário principal
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Regra para gerar o executável
-$(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $(TARGET) -lm
+# Regra para compilar os arquivos fonte
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-# Regra para compilar o main.c
-main.o: main.c funcs.h definitions.h
-	$(CC) $(CFLAGS) -c main.c
-
-# Regra para compilar todos os arquivos .c exceto o main.c
-%.o: %.c %.h
-	$(CC) $(CFLAGS) -c $<
-
-# Regra para limpar os arquivos gerados
+# Regra para limpeza
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET)
+
+# Regra para rodar o programa
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: default clean run
