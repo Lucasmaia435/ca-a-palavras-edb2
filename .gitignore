@@ -1,5 +1,4 @@
 .vscode
 output
-funcs.o
-main.exe
-main.o
+*.o
+*.exe

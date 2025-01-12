@@ -32,7 +32,7 @@ void inserir_digital(NoDigital *root, const char *word)
         }
         if (!node->filhos[index])
         {
-            node->filhos[index] = create_node();
+            node->filhos[index] = criarNoDigital();
         }
         node = node->filhos[index];
         word++;
@@ -84,7 +84,7 @@ void carrega_palavras_digital(NoDigital *root, const char *filename)
     char word[256];
     while (fscanf(file, "%255s", word) == 1)
     {
-        insert(root, word);
+        inserir_digital(root, word);
     }
 
     fclose(file);
@@ -96,7 +96,7 @@ void liberar_no_digital(NoDigital *root)
         return;
     for (int i = 0; i < TAM_ALFABETO; i++)
     {
-        liberarNo(root->filhos[i]);
+        liberar_no_digital(root->filhos[i]);
     }
     free(root);
 }
