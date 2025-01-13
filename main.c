@@ -9,19 +9,12 @@ int main(int argc, char *argv[])
     setlocale(LC_ALL, "pt_BR.UTF-8");
 
     NoDigital *raiz = criarNoDigital();
+    int *linhas = (int *)malloc(sizeof(int));
+    int *colunas = (int *)malloc(sizeof(int));
+
+    char **tabuleiro = ler_tabuleiro_arquivo("tabuleiro.txt", linhas, colunas);
 
     ler_palavras_arquivo("palavras.txt", raiz);
-
-    bool resultado = procurar_digital(raiz, "calo");
-
-    if (resultado)
-    {
-        printf("A palavra foi encontrada.\n");
-    }
-    else
-    {
-        printf("A palavra não foi encontrada.\n");
-    }
 
     return 0;
 }

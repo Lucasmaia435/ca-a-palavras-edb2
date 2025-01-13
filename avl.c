@@ -18,10 +18,10 @@ int calcular_fator_de_balanceamento_avl(NoAVL *no)
         return obter_altura_avl(no->esquerdo) - obter_altura_avl(no->direito);
 }
 
-NoAVL *criar_no_avl(int dado)
+NoAVL *criar_no_avl(char *palavra)
 {
     NoAVL *no = (NoAVL *)malloc(sizeof(NoAVL));
-    no->dado = dado;
+    no->palavra = palavra;
     no->esquerdo = NULL;
     no->direito = NULL;
     no->altura = 0;
@@ -71,15 +71,15 @@ NoAVL *rotacao_esquerda_avl(NoAVL *x)
     return y;
 }
 
-NoAVL *inserir_no_avl(NoAVL *no, int dado)
+NoAVL *inserir_no_avl(NoAVL *no, char *palavra)
 {
     if (no == NULL)
-        return criar_no_avl(dado);
+        return criar_no_avl(palavra);
 
-    if (dado < no->dado)
-        no->esquerdo = inserir_no_avl(no->esquerdo, dado);
-    else if (dado > no->dado)
-        no->direito = inserir_no_avl(no->direito, dado);
+    if (*palavra < *no->palavra)
+        no->esquerdo = inserir_no_avl(no->esquerdo, palavra);
+    else if (*palavra > *no->palavra)
+        no->direito = inserir_no_avl(no->direito, palavra);
     else
         return no;
 
@@ -91,22 +91,22 @@ NoAVL *inserir_no_avl(NoAVL *no, int dado)
     int balanceamento = calcular_fator_de_balanceamento_avl(no);
 
     /* Caso 1: Desbalanceamento à esquerda (Rotação à direita). */
-    if (balanceamento > 1 && dado < no->esquerdo->dado)
+    if (balanceamento > 1 && *palavra < *no->esquerdo->palavra)
         return rotacao_direita_avl(no);
 
     /* Caso 2: Desbalanceamento à direita (Rotação à esquerda). */
-    if (balanceamento < -1 && dado > no->direito->dado)
+    if (balanceamento < -1 && *palavra > *no->direito->palavra)
         return rotacao_esquerda_avl(no);
 
     /* Caso 3: Desbalanceamento esquerda-direita (Rotação dupla esquerda-direita). */
-    if (balanceamento > 1 && dado > no->esquerdo->dado)
+    if (balanceamento > 1 && *palavra > *no->esquerdo->palavra)
     {
         no->esquerdo = rotacao_esquerda_avl(no->esquerdo);
         return rotacao_direita_avl(no);
     }
 
     /* Caso 4: Desbalanceamento direita-esquerda (Rotação dupla direita-esquerda). */
-    if (balanceamento < -1 && dado < no->direito->dado)
+    if (balanceamento < -1 && *palavra < *no->direito->palavra)
     {
         no->direito = rotacao_direita_avl(no->direito);
         return rotacao_esquerda_avl(no);
@@ -125,18 +125,18 @@ NoAVL *menor_valorNo_avl(NoAVL *no)
     return atual;
 }
 
-NoAVL *remover_no_avl(NoAVL *raiz, int dado)
+NoAVL *remover_no_avl(NoAVL *raiz, char *palavra)
 {
     if (raiz == NULL)
         return raiz;
 
-    if (dado < raiz->dado)
+    if (*palavra < *raiz->palavra)
     {
-        raiz->esquerdo = remover_no_avl(raiz->esquerdo, dado);
+        raiz->esquerdo = remover_no_avl(raiz->esquerdo, palavra);
     }
-    else if (dado > raiz->dado)
+    else if (*palavra > *raiz->palavra)
     {
-        raiz->direito = remover_no_avl(raiz->direito, dado);
+        raiz->direito = remover_no_avl(raiz->direito, palavra);
     }
     else
     {
@@ -168,9 +168,9 @@ NoAVL *remover_no_avl(NoAVL *raiz, int dado)
             /* Caso de dois filhos: obtém o sucessor. */
             NoAVL *temp = menor_valorNo_avl(raiz->direito);
 
-            raiz->dado = temp->dado;
+            raiz->palavra = temp->palavra;
 
-            raiz->direito = remover_no_avl(raiz->direito, temp->dado);
+            raiz->direito = remover_no_avl(raiz->direito, temp->palavra);
         }
     }
 
@@ -215,7 +215,7 @@ void imprimir_em_ordem_avl(NoAVL *raiz)
     if (raiz != NULL)
     {
         imprimir_em_ordem_avl(raiz->esquerdo);
-        printf("%d ", raiz->dado);
+        printf("%s ", raiz->palavra);
         imprimir_em_ordem_avl(raiz->direito);
     }
 }

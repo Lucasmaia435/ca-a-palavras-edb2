@@ -4,4 +4,6 @@
 
 void ler_palavras_arquivo(char *nome_arquivo, NoDigital *raiz);
 
-#endif // JOGO_H
+char **ler_tabuleiro_arquivo(char *nome_arquivo, int *linhas, int *colunas);
+
+#endif
