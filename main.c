@@ -16,5 +16,7 @@ int main(int argc, char *argv[])
 
     ler_palavras_arquivo("palavras.txt", raiz);
 
+    buscar_palavras(tabuleiro, raiz, *linhas, *colunas);
+
     return 0;
 }
