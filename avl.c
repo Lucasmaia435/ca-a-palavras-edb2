@@ -1,6 +1,7 @@
 #include "avl.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int obter_altura_avl(NoAVL *no)
 {
@@ -21,7 +22,7 @@ int calcular_fator_de_balanceamento_avl(NoAVL *no)
 NoAVL *criar_no_avl(char *palavra)
 {
     NoAVL *no = (NoAVL *)malloc(sizeof(NoAVL));
-    no->palavra = palavra;
+    no->palavra = strdup(palavra);
     no->esquerdo = NULL;
     no->direito = NULL;
     no->altura = 0;
@@ -76,9 +77,9 @@ NoAVL *inserir_no_avl(NoAVL *no, char *palavra)
     if (no == NULL)
         return criar_no_avl(palavra);
 
-    if (*palavra < *no->palavra)
+    if (strcmp(palavra, no->palavra) < 0)
         no->esquerdo = inserir_no_avl(no->esquerdo, palavra);
-    else if (*palavra > *no->palavra)
+    else if (strcmp(palavra, no->palavra) > 0)
         no->direito = inserir_no_avl(no->direito, palavra);
     else
         return no;
@@ -91,22 +92,22 @@ NoAVL *inserir_no_avl(NoAVL *no, char *palavra)
     int balanceamento = calcular_fator_de_balanceamento_avl(no);
 
     /* Caso 1: Desbalanceamento à esquerda (Rotação à direita). */
-    if (balanceamento > 1 && *palavra < *no->esquerdo->palavra)
+    if (balanceamento > 1 && strcmp(palavra, no->esquerdo->palavra) < 0)
         return rotacao_direita_avl(no);
 
     /* Caso 2: Desbalanceamento à direita (Rotação à esquerda). */
-    if (balanceamento < -1 && *palavra > *no->direito->palavra)
+    if (balanceamento < -1 && strcmp(palavra, no->direito->palavra) > 0)
         return rotacao_esquerda_avl(no);
 
     /* Caso 3: Desbalanceamento esquerda-direita (Rotação dupla esquerda-direita). */
-    if (balanceamento > 1 && *palavra > *no->esquerdo->palavra)
+    if (balanceamento > 1 && strcmp(palavra, no->esquerdo->palavra) > 0)
     {
         no->esquerdo = rotacao_esquerda_avl(no->esquerdo);
         return rotacao_direita_avl(no);
     }
 
     /* Caso 4: Desbalanceamento direita-esquerda (Rotação dupla direita-esquerda). */
-    if (balanceamento < -1 && *palavra < *no->direito->palavra)
+    if (balanceamento < -1 && strcmp(palavra, no->direito->palavra) < 0)
     {
         no->direito = rotacao_direita_avl(no->direito);
         return rotacao_esquerda_avl(no);
@@ -130,11 +131,11 @@ NoAVL *remover_no_avl(NoAVL *raiz, char *palavra)
     if (raiz == NULL)
         return raiz;
 
-    if (*palavra < *raiz->palavra)
+    if (strcmp(palavra, raiz->palavra) < 0)
     {
         raiz->esquerdo = remover_no_avl(raiz->esquerdo, palavra);
     }
-    else if (*palavra > *raiz->palavra)
+    else if (strcmp(palavra, raiz->palavra) > 0)
     {
         raiz->direito = remover_no_avl(raiz->direito, palavra);
     }
@@ -161,6 +162,7 @@ NoAVL *remover_no_avl(NoAVL *raiz, char *palavra)
                 *raiz = *temp;
             }
 
+            free(temp->palavra);
             free(temp);
         }
         else
@@ -168,7 +170,8 @@ NoAVL *remover_no_avl(NoAVL *raiz, char *palavra)
             /* Caso de dois filhos: obtém o sucessor. */
             NoAVL *temp = menor_valorNo_avl(raiz->direito);
 
-            raiz->palavra = temp->palavra;
+            free(raiz->palavra);
+            raiz->palavra = strdup(temp->palavra);
 
             raiz->direito = remover_no_avl(raiz->direito, temp->palavra);
         }
