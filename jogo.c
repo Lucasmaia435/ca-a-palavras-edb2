@@ -60,7 +60,7 @@ char **ler_tabuleiro_arquivo(char *nome_arquivo, int *linhas, int *colunas)
 
 int dir[8][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
-void buscar_palavras_aux(char **tabuleiro, NoAVL *rootAVL, NoDigital *root, int i, int j, int linhas, int colunas, int i_dir, int j_dir)
+void buscar_palavras_aux(char **tabuleiro, NoAVL **rootAVL, NoDigital *root, int i, int j, int linhas, int colunas, int i_dir, int j_dir)
 {
     if (i < 0 || j < 0 || i >= linhas || j >= colunas)
     {
@@ -78,7 +78,7 @@ void buscar_palavras_aux(char **tabuleiro, NoAVL *rootAVL, NoDigital *root, int 
         if (procurar_digital(root, substring) == true)
         {
 
-            rootAVL = inserir_no_avl(rootAVL, substring);
+            *rootAVL = inserir_no_avl(*rootAVL, substring);
             remover_digital(root, substring);
             printf("palavra achada %s\n", substring);
             free(substring);
@@ -102,7 +102,7 @@ void buscar_palavras_aux(char **tabuleiro, NoAVL *rootAVL, NoDigital *root, int 
     free(substring);
 }
 
-void buscar_palavras(char **tabuleiro, NoAVL *rootAVL, NoDigital *root, int linhas, int colunas)
+void buscar_palavras(char **tabuleiro, NoAVL **rootAVL, NoDigital *root, int linhas, int colunas)
 {
     printf("Varrendo o tabuleiro para buscar palavras...");
 
@@ -114,7 +114,6 @@ void buscar_palavras(char **tabuleiro, NoAVL *rootAVL, NoDigital *root, int linh
             char str[2] = {tabuleiro[i][j], '\0'};
             if (comeca_com_digital(root, str) == true)
             {
-                printf("Começando com %c\n", tabuleiro[i][j]);
                 for (int z = 0; z < 8; z++)
                 {
 

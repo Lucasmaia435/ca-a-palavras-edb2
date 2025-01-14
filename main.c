@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     setlocale(LC_ALL, "pt_BR.UTF-8");
 
     NoDigital *raiz = criar_no_digital();
-    NoAVL *raizAVL = criar_no_avl(NULL);
+    NoAVL *raizAVL = NULL;
 
     int *linhas = (int *)malloc(sizeof(int));
     int *colunas = (int *)malloc(sizeof(int));
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     ler_palavras_arquivo("palavras.txt", raiz);
 
-    buscar_palavras(tabuleiro, raizAVL, raiz, *linhas, *colunas);
+    buscar_palavras(tabuleiro, &raizAVL, raiz, *linhas, *colunas);
 
     imprimir_em_ordem_avl(raizAVL);
 
