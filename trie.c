@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "trie.h"
 
-NoDigital *criarNoDigital(void)
+NoDigital *criar_no_digital(void)
 {
     NoDigital *node = (NoDigital *)malloc(sizeof(NoDigital));
     if (node)
@@ -32,7 +32,7 @@ void inserir_digital(NoDigital *root, const char *word)
         }
         if (!node->filhos[index])
         {
-            node->filhos[index] = criarNoDigital();
+            node->filhos[index] = criar_no_digital();
         }
         node = node->filhos[index];
         word++;
@@ -99,4 +99,56 @@ void liberar_no_digital(NoDigital *root)
         liberar_no_digital(root->filhos[i]);
     }
     free(root);
+}
+
+bool remover_digital(NoDigital *root, const char *word)
+{
+    if (!root)
+        return false;
+
+    return remover_digital_operacao(root, word, 0);
+}
+
+bool remover_digital_operacao(NoDigital *node, const char *word, int depth)
+{
+    if (!node)
+        return false;
+
+    if (*word == '\0')
+    {
+        if (node->fim_da_palavra)
+        {
+            node->fim_da_palavra = false;
+
+            for (int i = 0; i < TAM_ALFABETO; i++)
+            {
+                if (node->filhos[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    int index = *word - 'a';
+    if (remover_digital_operacao(node->filhos[index], word + 1, depth + 1))
+    {
+        free(node->filhos[index]);
+        node->filhos[index] = NULL;
+
+        if (!node->fim_da_palavra)
+        {
+            for (int i = 0; i < TAM_ALFABETO; i++)
+            {
+                if (node->filhos[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
